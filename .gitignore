@@ -1,0 +1,10 @@
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+deps/deps.jl
+deps/build.log
+deps/usr/downloads
+deps/usr/darknet-master
+deps/usr/manifests
+/.DS_Store
+
