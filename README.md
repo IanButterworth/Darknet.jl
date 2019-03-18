@@ -13,7 +13,7 @@ For the MacOS build, you just need to:
 ```
 
 ## Testing
-```
+```julia
 using Darknet, Images
 d = "/path/to/weights_and_config_files/"
 p = "/path/to/imagess"
