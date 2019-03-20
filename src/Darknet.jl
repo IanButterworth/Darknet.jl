@@ -23,4 +23,6 @@ include(joinpath(@__DIR__, "..", "gen", "libdarknet_api.jl"))
 
 include("testing.jl")
 
+include("utils.jl")
+
 end # module Darknet
