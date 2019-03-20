@@ -2,7 +2,7 @@
 
 ## Step 1: Make binary
 Before Making, make sure the libdarknet.so filename setting has the 
-appropriate extension  for your target operating system
+appropriate extension  for your target operating system (.dylib for MacOS)
 
 
 
