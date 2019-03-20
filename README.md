@@ -68,7 +68,7 @@ scene = Scene(resolution = size(img'))
 image!(scene,img',scale_plot = false)
 
 for res in results
-    bbox = (res[3])
+    bbox = res[3]
     poly!(scene,[Rectangle{Float32}(bbox[1]-(bbox[3]/2),bbox[2]-(bbox[4]/2),bbox[3],bbox[4])],color=RGBA(0,1,0,clamp(conf,0.05,0.5)))
 end
 scene
