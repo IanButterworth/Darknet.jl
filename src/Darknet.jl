@@ -1,5 +1,5 @@
 module Darknet
-using Libdl
+using Libdl, CEnum
 
 # Load in `deps.jl`, complaining if it does not exist
 const depsjl_path = joinpath(@__DIR__, "..", "deps", "deps.jl")
@@ -13,7 +13,6 @@ function __init__()
     check_deps()
 end
 
-using CEnum
 
 include("ctypes.jl")
 export Ctm, Ctime_t, Cclock_t
