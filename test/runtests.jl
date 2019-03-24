@@ -1,5 +1,6 @@
+using Darknet
 using Test
-import Darknet
+
 
 darknet_img = Darknet.array_to_image(rand(Float32,100,10))
 
