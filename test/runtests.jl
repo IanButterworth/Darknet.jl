@@ -8,3 +8,9 @@ using Test
     @test darknet_img.w == 10
     @test darknet_img.c == 1
 end
+
+@testset "Read Metadata" begin
+    cd(dirname(Darknet.libdarknet))
+    meta = Darknet.get_metadata("cfg/coco.data")
+    @test 80 == meta.classes
+end
