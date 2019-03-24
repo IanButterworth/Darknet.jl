@@ -1,7 +1,6 @@
 using Darknet
 using Test
 
-
 @testset "Create Darknet image" begin
     darknet_img = Darknet.array_to_image(rand(Float32,100,10))
     @test typeof(darknet_img) == Darknet.image
