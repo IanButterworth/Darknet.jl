@@ -1,5 +1,8 @@
 # Darknet.jl
 
+[![Build Status](https://travis-ci.org/ianshmean/Darknet.jl.svg?branch=master)](https://travis-ci.org/ianshmean/Darknet.jl)
+[![Codecov](https://codecov.io/gh/ianshmean/Darknet.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/ianshmean/Darknet.jl)
+
 Wrapper for https://github.com/AlexeyAB/darknet
 
 Currently only works on:
