@@ -3,10 +3,12 @@
 [![Build Status](https://travis-ci.org/ianshmean/Darknet.jl.svg?branch=master)](https://travis-ci.org/ianshmean/Darknet.jl)
 [![Codecov](https://codecov.io/gh/ianshmean/Darknet.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/ianshmean/Darknet.jl)
 
-Wrapper for https://github.com/AlexeyAB/darknet
+Wrapper for https://github.com/AlexeyAB/darknet based on pre-build binaries.
 
 Currently only works on:
 -  MacOS, based on a CPU-only darknet built binary
+
+Further platform support, and support of CUDA, Tensor Cores, OpenMP, etc. requires of tarball-ed binaries of such builds to be added. PRs welcomed.
 
 ## Installation
 
