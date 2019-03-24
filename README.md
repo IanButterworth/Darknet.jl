@@ -9,7 +9,7 @@ Currently only works on:
 
 For the MacOS build, you just need to:
 ```
-] add https://github.com/ianshmean/Darknet.jl
+] add Darknet
 ```
 
 ## Testing
