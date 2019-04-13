@@ -1,7 +1,7 @@
 name = "Darknet"
 uuid = "e2912957-7d06-5673-a7d6-96d153624877"
 authors = ["Ian Butterworth <i.r.butterworth@gmail.com"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 BinaryProvider = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
