@@ -7,4 +7,4 @@ deps/usr/downloads
 deps/usr/darknet-master
 deps/usr/manifests
 /.DS_Store
-
+/Manifest.toml
