@@ -10,9 +10,9 @@ function load_network_custom(cfg, weights, clear, batch)
     ccall((:load_network_custom, libdarknet), Ptr{network}, (Cstring, Cstring, Cint, Cint), cfg, weights, clear, batch)
 end
 
-function load_network(cfg, weights, clear)
-    ccall((:load_network, libdarknet), Ptr{network}, (Cstring, Cstring, Cint), cfg, weights, clear)
-end
+# function load_network(cfg, weights, clear)
+#     ccall((:load_network, libdarknet), Ptr{network}, (Cstring, Cstring, Cint), cfg, weights, clear)
+# end
 
 function get_base_args(net)
     ccall((:get_base_args, libdarknet), load_args, (Ptr{network},), net)

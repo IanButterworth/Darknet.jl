@@ -7,6 +7,7 @@ Wrapper for https://github.com/AlexeyAB/darknet based on pre-build binaries.
 
 Currently only works on:
 -  MacOS, based on a CPU-only darknet built binary
+-  Linux, CUDA may work.. still testing
 
 Further platform support, and support of CUDA, Tensor Cores, OpenMP, etc. requires of tarball-ed binaries of such builds to be added. PRs welcomed.
 
