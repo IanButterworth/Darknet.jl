@@ -3,7 +3,6 @@
 *.jl.mem
 deps/deps.jl
 deps/build.log
-julia = "1"
 deps/usr
 /.DS_Store
 Manifest.toml
