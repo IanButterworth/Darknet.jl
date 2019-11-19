@@ -24,12 +24,12 @@ using Darknet, Images
 d = "/path/to/weights_and_config_files/"
 weightsfile = "yolov3-tiny.weights"
 cfgfile = "yolov3-tiny.cfg"
-namesfile = "coco.data"
+datafile = "coco.data"
 
 imagefile = "/path/to/images/test.jpg"
 
 net = Darknet.load_network(joinpath(d,cfgfile), joinpath(d,weightsfile),1)
-meta = Darknet.get_metadata(joinpath(d,namesfile));
+meta = Darknet.get_metadata(joinpath(d,datafile));
 
 ```
 Reading in an image from file:
