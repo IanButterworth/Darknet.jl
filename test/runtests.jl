@@ -30,9 +30,7 @@ end
     datafile = "coco.data"
 
     net = Darknet.load_network(joinpath(datadir, cfgfile), joinpath(datadir, weightsfile), 1)
-    @show typeof(net)
     meta = Darknet.get_metadata(joinpath(datadir, datafile));
-    @show typeof(meta)
 
     imagefile = joinpath(@__DIR__, "examples", "dog-cycle-car.png")
 
@@ -40,6 +38,6 @@ end
     img = img[1:3, :, :] #throw away the alpha channel
     img_d = Darknet.array_to_image(img) #Darknet image type with pointers to source data
 
-    # results = Darknet.detect(net, meta, img_d, thresh=0.1, nms=0.3)
-    # @show results
+    results = Darknet.detect(net, meta, img_d, thresh=0.1, nms=0.3)
+    @test length(results) == 7
 end
