@@ -4,7 +4,7 @@ array_to_image(arr::Array{Float32},arr_permuted::Array{Float32}) -> image (darkn
 Convert array to darknet image type, avoiding allocation
 """
 function array_to_image(arr::Array{Float32},arr_permuted::Array{Float32})
-    if length(size(arr)) == 3 
+    if length(size(arr)) == 3
         permutedims!(arr_permuted,arr,[2,1,3])
     else
         permutedims!(arr_permuted,arr,[2,1])
@@ -25,8 +25,8 @@ array_to_image(arr::Array{Float32}) -> image (darknet type with pointers)
 Convert array to darknet image type
 """
 function array_to_image(arr::Array{Float32})
-    if length(size(arr)) == 3 
-        arr_permuted = permutedims(arr,[2,1,3])
+    if length(size(arr)) == 3
+        arr_permuted = permutedims(arr,[3,2,1])
     else
         arr_permuted = permutedims(arr,[2,1])
     end
