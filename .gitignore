@@ -1,3 +1,4 @@
+
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
@@ -8,3 +9,4 @@ deps/usr
 Manifest.toml
 *.data
 *.weights
+.DS_Store
