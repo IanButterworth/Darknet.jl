@@ -10,7 +10,6 @@ using Test
 end
 
 @testset "Read Metadata" begin
-    cd(dirname(Darknet.libdarknet))
-    meta = Darknet.get_metadata("cfg/coco.data")
+    meta = Darknet.get_metadata(joinpath(dirname(@__DIR__),"data","coco.data"))
     @test 80 == meta.classes
 end

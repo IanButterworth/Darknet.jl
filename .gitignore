@@ -6,3 +6,4 @@ deps/build.log
 deps/usr
 /.DS_Store
 Manifest.toml
+*.data
