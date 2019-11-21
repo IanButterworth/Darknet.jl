@@ -1,5 +1,4 @@
 
-
 const datadir = joinpath(dirname(@__DIR__), "data")
 
 files = readdir(datadir)
@@ -20,3 +19,5 @@ for file in files
         write(io, contents)
     end
 end
+weightsfile = joinpath(datadir,"yolov3-tiny.weights")
+!isfile(weightsfile) && download("https://pjreddie.com/media/files/yolov3-tiny.weights", weightsfile)

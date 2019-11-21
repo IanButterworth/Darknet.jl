@@ -3,19 +3,19 @@ array_to_image(arr::Array{Float32},arr_permuted::Array{Float32}) -> image (darkn
 
 Convert array to darknet image type, avoiding allocation
 """
-function array_to_image(arr::Array{Float32},arr_permuted::Array{Float32})
-    if length(size(arr)) == 3 
-        permutedims!(arr_permuted,arr,[2,1,3])
+function array_to_image(arr::Array{Float32}, arr_permuted::Array{Float32})
+    if ndims(arr) == 3
+        permutedims!(arr_permuted, arr, [3, 2, 1])
+    elseif lndims(arr) == 2
+        permutedims!(arr_permuted, arr, [2, 1])
     else
-        permutedims!(arr_permuted,arr,[2,1])
+        error("Image does not have 2 or 3 dims")
     end
-    w = size(arr_permuted,1)
-    h = size(arr_permuted,2)
-    c = size(arr_permuted,3)
+    w, h, c = size(arr_permuted)
     if c > 1
-        return image(w,h,c,pointer(arr_permuted))
+        return image(w, h, c, pointer(arr_permuted))
     else
-        return image(w,h,c,pointer(arr_permuted))
+        return image(w, h, c, pointer(arr_permuted))
     end
 end
 
@@ -25,17 +25,16 @@ array_to_image(arr::Array{Float32}) -> image (darknet type with pointers)
 Convert array to darknet image type
 """
 function array_to_image(arr::Array{Float32})
-    if length(size(arr)) == 3 
-        arr_permuted = permutedims(arr,[2,1,3])
+    if ndims(arr) == 3
+        arr_permuted = permutedims(arr, [3, 2, 1])
+    elseif ndims(arr) == 2
+        arr_permuted = reshape(
+            permutedims(arr, [2, 1]),
+            (size(arr, 2), size(arr, 1), 1),
+        )
     else
-        arr_permuted = permutedims(arr,[2,1])
+        error("Image does not have 2 or 3 dims")
     end
-    w = size(arr_permuted,1)
-    h = size(arr_permuted,2)
-    c = size(arr_permuted,3)
-    if c > 1
-        return image(w,h,c,pointer(arr_permuted))
-    else
-        return image(w,h,c,pointer(arr_permuted))
-    end
+    @show w, h, c = size(arr_permuted)
+    return image(w, h, c, pointer(arr_permuted))
 end

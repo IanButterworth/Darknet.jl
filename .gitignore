@@ -7,3 +7,4 @@ deps/usr
 /.DS_Store
 Manifest.toml
 *.data
+*.weights
