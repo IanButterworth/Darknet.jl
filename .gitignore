@@ -1,3 +1,4 @@
+
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
@@ -6,3 +7,6 @@ deps/build.log
 deps/usr
 /.DS_Store
 Manifest.toml
+*.data
+*.weights
+.DS_Store

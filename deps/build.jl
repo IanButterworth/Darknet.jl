@@ -12,7 +12,7 @@ products = Product[
 
 # Download binaries from hosted location
 bin_prefix = "https://github.com/ianshmean/bins/raw/master/3rdparty/Darknet"
-                    
+
 download_info = Dict(
     Linux(:x86_64)  => ("$bin_prefix/darknet-AlexeyAB-YOLOv3-Ubuntu18.04-CPU-only.tar.gz", "bfa6ae50c5613fb0e8b71a884fce7fea92bb8e736674d64931e0c1fc3121251d"),
     MacOS(:x86_64)  => ("$bin_prefix/darknet-AlexeyAB-YOLOv3-MacOS.10.14.3-CPU-only.tar.gz", "c9d79e1918c785149d39920608b4efb22fc910895ab6baf9aa5f7f43169a37fe"),
@@ -36,3 +36,26 @@ if any(!satisfied(p; verbose=false) for p in products)
     # Finally, write out a deps.jl file
     write_deps_file(joinpath(@__DIR__, "deps.jl"), products)
 end
+
+const datadir = joinpath(dirname(@__DIR__), "data")
+
+files = readdir(datadir)
+filter!(x->endswith(x, ".names"), files)
+
+for file in files
+    classes = length(readlines(joinpath(datadir, file)))
+    basename = splitext(file)[1]
+    open(joinpath(datadir, "$basename.data"), "w") do io
+        contents = """
+        classes=$classes
+        train  = $(datadir)/coco_train.txt
+        valid  = $(datadir)/coco_test.txt
+        names = $(datadir)/coco.names
+        backup = $(datadir)/new-weights/
+        eval=coco
+        """
+        write(io, contents)
+    end
+end
+weightsfile = joinpath(datadir,"yolov3-tiny.weights")
+!isfile(weightsfile) && download("https://pjreddie.com/media/files/yolov3-tiny.weights", weightsfile)
