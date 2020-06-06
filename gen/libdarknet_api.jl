@@ -1,5 +1,5 @@
-# Julia wrapper for header: darknet-master/include/darknet.h
-# Automatically generated using Clang.jl wrap_c
+# Julia wrapper for header: darknet.h
+# Automatically generated using Clang.jl
 
 
 function load_network(cfg, weights, clear)
@@ -14,6 +14,10 @@ end
 #     ccall((:load_network, libdarknet), Ptr{network}, (Cstring, Cstring, Cint), cfg, weights, clear)
 # end
 
+function free_network(net)
+    ccall((:free_network, libdarknet), Cvoid, (network,), net)
+end
+
 function get_base_args(net)
     ccall((:get_base_args, libdarknet), load_args, (Ptr{network},), net)
 end
@@ -24,6 +28,10 @@ end
 
 function do_nms_obj(dets, total, classes, thresh)
     ccall((:do_nms_obj, libdarknet), Cvoid, (Ptr{detection}, Cint, Cint, Cfloat), dets, total, classes, thresh)
+end
+
+function diounms_sort(dets, total, classes, thresh, nms_kind, beta1)
+    ccall((:diounms_sort, libdarknet), Cvoid, (Ptr{detection}, Cint, Cint, Cfloat, NMS_KIND, Cfloat), dets, total, classes, thresh, nms_kind, beta1)
 end
 
 function network_predict(net, input)
@@ -38,8 +46,16 @@ function get_network_boxes(net, w, h, thresh, hier, map, relative, num, letter)
     ccall((:get_network_boxes, libdarknet), Ptr{detection}, (Ptr{network}, Cint, Cint, Cfloat, Cfloat, Ptr{Cint}, Cint, Ptr{Cint}, Cint), net, w, h, thresh, hier, map, relative, num, letter)
 end
 
+function network_predict_batch(net, im, batch_size, w, h, thresh, hier, map, relative, letter)
+    ccall((:network_predict_batch, libdarknet), Ptr{det_num_pair}, (Ptr{network}, image, Cint, Cint, Cint, Cfloat, Cfloat, Ptr{Cint}, Cint, Cint), net, im, batch_size, w, h, thresh, hier, map, relative, letter)
+end
+
 function free_detections(dets, n)
     ccall((:free_detections, libdarknet), Cvoid, (Ptr{detection}, Cint), dets, n)
+end
+
+function free_batch_detections(det_num_pairs, n)
+    ccall((:free_batch_detections, libdarknet), Cvoid, (Ptr{det_num_pair}, Cint), det_num_pairs, n)
 end
 
 function fuse_conv_batchnorm(net)
@@ -70,16 +86,20 @@ function network_predict_image(net, im)
     ccall((:network_predict_image, libdarknet), Ptr{Cfloat}, (Ptr{network}, image), net, im)
 end
 
-function validate_detector_map(datacfg, cfgfile, weightfile, thresh_calc_avg_iou, iou_thresh, existing_net)
-    ccall((:validate_detector_map, libdarknet), Cfloat, (Cstring, Cstring, Cstring, Cfloat, Cfloat, Ptr{network}), datacfg, cfgfile, weightfile, thresh_calc_avg_iou, iou_thresh, existing_net)
+function network_predict_image_letterbox(net, im)
+    ccall((:network_predict_image_letterbox, libdarknet), Ptr{Cfloat}, (Ptr{network}, image), net, im)
 end
 
-function train_detector(datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port)
-    ccall((:train_detector, libdarknet), Cvoid, (Cstring, Cstring, Cstring, Ptr{Cint}, Cint, Cint, Cint, Cint, Cint), datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port)
+function validate_detector_map(datacfg, cfgfile, weightfile, thresh_calc_avg_iou, iou_thresh, map_points, letter_box, existing_net)
+    ccall((:validate_detector_map, libdarknet), Cfloat, (Cstring, Cstring, Cstring, Cfloat, Cfloat, Cint, Cint, Ptr{network}), datacfg, cfgfile, weightfile, thresh_calc_avg_iou, iou_thresh, map_points, letter_box, existing_net)
 end
 
-function test_detector(datacfg, cfgfile, weightfile, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile)
-    ccall((:test_detector, libdarknet), Cvoid, (Cstring, Cstring, Cstring, Cstring, Cfloat, Cfloat, Cint, Cint, Cint, Cstring), datacfg, cfgfile, weightfile, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile)
+function train_detector(datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port, show_imgs, benchmark_layers, chart_path)
+    ccall((:train_detector, libdarknet), Cvoid, (Cstring, Cstring, Cstring, Ptr{Cint}, Cint, Cint, Cint, Cint, Cint, Cint, Cint, Cstring), datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port, show_imgs, benchmark_layers, chart_path)
+end
+
+function test_detector(datacfg, cfgfile, weightfile, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile, letter_box, benchmark_layers)
+    ccall((:test_detector, libdarknet), Cvoid, (Cstring, Cstring, Cstring, Cstring, Cfloat, Cfloat, Cint, Cint, Cint, Cstring, Cint, Cint), datacfg, cfgfile, weightfile, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile, letter_box, benchmark_layers)
 end
 
 function network_width(net)
@@ -94,8 +114,20 @@ function optimize_picture(net, orig, max_layer, scale, rate, thresh, norm)
     ccall((:optimize_picture, libdarknet), Cvoid, (Ptr{network}, image, Cint, Cfloat, Cfloat, Cfloat, Cint), net, orig, max_layer, scale, rate, thresh, norm)
 end
 
+function make_image_red(im)
+    ccall((:make_image_red, libdarknet), Cvoid, (image,), im)
+end
+
+function make_attention_image(img_size, original_delta_cpu, original_input_cpu, w, h, c)
+    ccall((:make_attention_image, libdarknet), image, (Cint, Ptr{Cfloat}, Ptr{Cfloat}, Cint, Cint, Cint), img_size, original_delta_cpu, original_input_cpu, w, h, c)
+end
+
 function resize_image(im, w, h)
     ccall((:resize_image, libdarknet), image, (image, Cint, Cint), im, w, h)
+end
+
+function quantize_image(im)
+    ccall((:quantize_image, libdarknet), Cvoid, (image,), im)
 end
 
 function copy_image_from_bytes(im, pdata)
@@ -122,8 +154,20 @@ function free_image(m)
     ccall((:free_image, libdarknet), Cvoid, (image,), m)
 end
 
-function free_layer(arg1)
-    ccall((:free_layer, libdarknet), Cvoid, (layer,), arg1)
+function crop_image(im, dx, dy, w, h)
+    ccall((:crop_image, libdarknet), image, (image, Cint, Cint, Cint, Cint), im, dx, dy, w, h)
+end
+
+function resize_min(im, min)
+    ccall((:resize_min, libdarknet), image, (image, Cint), im, min)
+end
+
+function free_layer_custom(l, keep_cudnn_desc)
+    ccall((:free_layer_custom, libdarknet), Cvoid, (layer, Cint), l, keep_cudnn_desc)
+end
+
+function free_layer(l)
+    ccall((:free_layer, libdarknet), Cvoid, (layer,), l)
 end
 
 function free_data(d)
@@ -134,8 +178,16 @@ function load_data()
     ccall((:load_data, libdarknet), Cint, ())
 end
 
+function free_load_threads(ptr)
+    ccall((:free_load_threads, libdarknet), Cvoid, (Ptr{Cvoid},), ptr)
+end
+
 function load_data_in_thread()
     ccall((:load_data_in_thread, libdarknet), Cint, ())
+end
+
+function load_thread(ptr)
+    ccall((:load_thread, libdarknet), Ptr{Cvoid}, (Ptr{Cvoid},), ptr)
 end
 
 function cuda_pull_array(x_gpu, x, n)
@@ -148,6 +200,10 @@ end
 
 function cuda_set_device(n)
     ccall((:cuda_set_device, libdarknet), Cvoid, (Cint,), n)
+end
+
+function cuda_get_context()
+    ccall((:cuda_get_context, libdarknet), Ptr{Cvoid}, ())
 end
 
 function free_ptrs(ptrs, n)
@@ -164,6 +220,14 @@ end
 
 function get_metadata(file)
     ccall((:get_metadata, libdarknet), metadata, (Cstring,), file)
+end
+
+function delete_json_sender()
+    ccall((:delete_json_sender, libdarknet), Cvoid, ())
+end
+
+function send_json_custom(send_buf, port, timeout)
+    ccall((:send_json_custom, libdarknet), Cvoid, (Cstring, Cint, Cint), send_buf, port, timeout)
 end
 
 function get_time_point()
@@ -192,4 +256,8 @@ end
 
 function show_total_time()
     ccall((:show_total_time, libdarknet), Cvoid, ())
+end
+
+function init_cpu()
+    ccall((:init_cpu, libdarknet), Cvoid, ())
 end

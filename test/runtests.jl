@@ -39,5 +39,6 @@ end
     img_d = Darknet.array_to_image(img) #Darknet image type with pointers to source data
 
     results = Darknet.detect(net, meta, img_d, thresh=0.1, nms=0.3)
+    @info "Objects detected: $(length(results))"
     @test length(results) == 7
 end

@@ -1,15 +1,16 @@
 # Darknet.jl
 
+![Run tests](https://github.com/ianshmean/Darknet.jl/workflows/Run%20tests/badge.svg)
 [![Build Status](https://travis-ci.org/ianshmean/Darknet.jl.svg?branch=master)](https://travis-ci.org/ianshmean/Darknet.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/2n88aw5flrcxpm3n?svg=true)](https://ci.appveyor.com/project/ianshmean/darknet-jl)
+[![Build Status](https://cloud.drone.io/api/badges/ianshmean/Darknet.jl/status.svg)](https://cloud.drone.io/ianshmean/Darknet.jl)
 [![Codecov](https://codecov.io/gh/ianshmean/Darknet.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/ianshmean/Darknet.jl)
 
 Wrapper for https://github.com/AlexeyAB/darknet based on pre-build binaries.
 
-Currently only works on:
--  MacOS, based on a CPU-only darknet built binary
--  Linux, CUDA may work.. still testing
+Current support:
+- All platforms, CPU-only with OPENMP=1 via BinaryBuilder: https://github.com/JuliaPackaging/Yggdrasil/blob/master/D/Darknet/build_tarballs.jl
 
-Further platform support, and support of CUDA, Tensor Cores, OpenMP, etc. requires of tarball-ed binaries of such builds to be added. PRs welcomed.
 
 ## Installation
 
