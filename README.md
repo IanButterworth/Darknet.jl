@@ -9,7 +9,22 @@
 Wrapper for https://github.com/AlexeyAB/darknet based on pre-build binaries.
 
 Current support:
-- All platforms, CPU-only with OPENMP=1 via BinaryBuilder: https://github.com/JuliaPackaging/Yggdrasil/blob/master/D/Darknet/build_tarballs.jl
+- CPU-only with OPENMP=1 via BinaryBuilder: https://github.com/JuliaPackaging/Yggdrasil/blob/master/D/Darknet
+```
+Platform: Linux(:i686, libc=:glibc); triplet: i686-linux-gnu
+Platform: Linux(:x86_64, libc=:glibc); triplet: x86_64-linux-gnu
+Platform: Linux(:aarch64, libc=:glibc); triplet: aarch64-linux-gnu
+Platform: Linux(:armv7l, libc=:glibc, call_abi=:eabihf); triplet: armv7l-linux-gnueabihf
+Platform: Linux(:powerpc64le, libc=:glibc); triplet: powerpc64le-linux-gnu
+Platform: Linux(:i686, libc=:musl); triplet: i686-linux-musl
+Platform: Linux(:x86_64, libc=:musl); triplet: x86_64-linux-musl
+Platform: Linux(:aarch64, libc=:musl); triplet: aarch64-linux-musl
+Platform: Linux(:armv7l, libc=:musl, call_abi=:eabihf); triplet: armv7l-linux-musleabihf
+Platform: MacOS(:x86_64); triplet: x86_64-apple-darwin14
+Platform: FreeBSD(:x86_64); triplet: x86_64-unknown-freebsd11.1
+Platform: Windows(:i686); triplet: i686-w64-mingw32
+Platform: Windows(:x86_64); triplet: x86_64-w64-mingw32
+```
 
 
 ## Installation
