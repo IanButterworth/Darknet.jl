@@ -9,7 +9,7 @@ Darknet_jll = "761d2b37-0f2d-5ad8-be19-54610544a161"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [compat]
-CEnum = "0.2, 0.4"
+CEnum = "0.2, 0.3, 0.4"
 Darknet_jll = "2020.6.5"
 julia = "1"
 
