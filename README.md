@@ -30,9 +30,10 @@ Platforms:
 
 ## Installation
 
-For the MacOS build, you just need to:
-```
-] add Darknet
+Requires julia 1.3+. Install with Pkg, just like any other registered Julia package:
+
+```jl
+pkg> add Darknet  # Press ']' to enter the Pkg REPL mode.
 ```
 
 ## Testing
