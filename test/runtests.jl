@@ -28,7 +28,7 @@ end
 end
 
 n = 5
-@testset "Load and run $ns times" begin
+@testset "Load and run $n times" begin
     weightsfile = "yolov3-tiny.weights"
     cfgfile = "yolov3-tiny.cfg"
     datafile = "coco.data"
