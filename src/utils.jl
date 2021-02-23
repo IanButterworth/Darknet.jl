@@ -12,11 +12,7 @@ function array_to_image(arr::Array{Float32},arr_permuted::Array{Float32})
     w = size(arr_permuted,1)
     h = size(arr_permuted,2)
     c = size(arr_permuted,3)
-    if c > 1
-        return image(w,h,c,pointer(arr_permuted))
-    else
-        return image(w,h,c,pointer(arr_permuted))
-    end
+    return Image(w,h,c,arr_permuted)
 end
 
 """
@@ -33,9 +29,5 @@ function array_to_image(arr::Array{Float32})
     w = size(arr_permuted,1)
     h = size(arr_permuted,2)
     c = size(arr_permuted,3)
-    if c > 1
-        return image(w,h,c,pointer(arr_permuted))
-    else
-        return image(w,h,c,pointer(arr_permuted))
-    end
+    return Image(w,h,c,arr_permuted)
 end
