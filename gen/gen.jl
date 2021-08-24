@@ -15,6 +15,9 @@ push!(args, "-I$include_dir")
 header_dir = include_dir
 headers = [joinpath(header_dir, header) for header in readdir(header_dir) if endswith(header, ".h")]
 
+# Skip pthread_t
+@add_def pthread_t
+
 # create context
 ctx = create_context(headers, args, options)
 

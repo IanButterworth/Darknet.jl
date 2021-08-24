@@ -1,5 +1,3 @@
-const pthread_t = Culong
-
 @cenum UNUSED_ENUM_TYPE::UInt32 begin
     UNUSED_DEF_VAL = 0
 end
