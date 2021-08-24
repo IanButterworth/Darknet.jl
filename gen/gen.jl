@@ -1,18 +1,22 @@
-using Clang
+using Clang.Generators
 using Darknet_jll
 
-# LIBDARKNET_HEADERS are those headers to be wrapped.
-const LIBDARKNET_INCLUDE = joinpath(dirname(Darknet_jll.libdarknet_path), "..", "include") |> normpath
-const LIBDARKNET_HEADERS = [joinpath(LIBDARKNET_INCLUDE, header) for header in readdir(LIBDARKNET_INCLUDE) if endswith(header, ".h")]
+cd(@__DIR__)
 
-wc = init(; headers = LIBDARKNET_HEADERS,
-            output_file = joinpath(@__DIR__, "libdarknet_api.jl"),
-            common_file = joinpath(@__DIR__, "libdarknet_common.jl"),
-            clang_includes = vcat(LIBDARKNET_INCLUDE, CLANG_INCLUDE),
-            clang_args = ["-I", joinpath(LIBDARKNET_INCLUDE, "..")],
-            header_wrapped = (root, current)->root == current,
-            header_library = x->"libdarknet",
-            clang_diagnostics = true,
-            )
+include_dir = joinpath(Darknet_jll.artifact_dir, "include") |> normpath
 
-run(wc)
+# wrapper generator options
+options = load_options(joinpath(@__DIR__, "generator.toml"))
+
+# add compiler flags, e.g. "-DXXXXXXXXX"
+args = get_default_args()
+push!(args, "-I$include_dir")
+
+header_dir = include_dir
+headers = [joinpath(header_dir, header) for header in readdir(header_dir) if endswith(header, ".h")]
+
+# create context
+ctx = create_context(headers, args, options)
+
+# run generator
+build!(ctx)
