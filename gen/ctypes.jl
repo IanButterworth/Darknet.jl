@@ -5,3 +5,4 @@
 const Ctm = Base.Libc.TmStruct
 const Ctime_t = UInt
 const Cclock_t = UInt
+const pthread_t = UInt
