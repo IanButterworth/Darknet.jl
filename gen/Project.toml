@@ -3,4 +3,4 @@ Clang = "40e3b903-d033-50b4-a0cc-940c62c95e31"
 Darknet_jll = "761d2b37-0f2d-5ad8-be19-54610544a161"
 
 [compat]
-Clang = "0.14"
+Clang = "0.18"
