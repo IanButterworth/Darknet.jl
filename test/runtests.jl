@@ -74,7 +74,7 @@ n = 5
         push!(all_results, results)
     end
     @testset "Exactly reproducible on the same system" begin
-        @test all(all_results .== all_results[1])
+        @test all(==(all_results[1]), all_results)
     end
     println(to)
 end
