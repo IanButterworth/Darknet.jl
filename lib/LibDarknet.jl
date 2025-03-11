@@ -2,150 +2,6 @@
     UNUSED_DEF_VAL = 0
 end
 
-@cenum learning_rate_policy::UInt32 begin
-    CONSTANT = 0
-    STEP = 1
-    EXP = 2
-    POLY = 3
-    STEPS = 4
-    SIG = 5
-    RANDOM = 6
-    SGDR = 7
-end
-
-struct tree
-    leaf::Ptr{Cint}
-    n::Cint
-    parent::Ptr{Cint}
-    child::Ptr{Cint}
-    group::Ptr{Cint}
-    name::Ptr{Cstring}
-    groups::Cint
-    group_size::Ptr{Cint}
-    group_offset::Ptr{Cint}
-end
-
-struct network
-    n::Cint
-    batch::Cint
-    seen::Ptr{Cvoid} # seen::Ptr{UInt64}
-    cur_iteration::Ptr{Cint}
-    loss_scale::Cfloat
-    t::Ptr{Cint}
-    epoch::Cfloat
-    subdivisions::Cint
-    layers::Ptr{Cvoid} # layers::Ptr{layer}
-    output::Ptr{Cfloat}
-    policy::learning_rate_policy
-    benchmark_layers::Cint
-    learning_rate::Cfloat
-    learning_rate_min::Cfloat
-    learning_rate_max::Cfloat
-    batches_per_cycle::Cint
-    batches_cycle_mult::Cint
-    momentum::Cfloat
-    decay::Cfloat
-    gamma::Cfloat
-    scale::Cfloat
-    power::Cfloat
-    time_steps::Cint
-    step::Cint
-    max_batches::Cint
-    num_boxes::Cint
-    train_images_num::Cint
-    seq_scales::Ptr{Cfloat}
-    scales::Ptr{Cfloat}
-    steps::Ptr{Cint}
-    num_steps::Cint
-    burn_in::Cint
-    cudnn_half::Cint
-    adam::Cint
-    B1::Cfloat
-    B2::Cfloat
-    eps::Cfloat
-    inputs::Cint
-    outputs::Cint
-    truths::Cint
-    notruth::Cint
-    h::Cint
-    w::Cint
-    c::Cint
-    max_crop::Cint
-    min_crop::Cint
-    max_ratio::Cfloat
-    min_ratio::Cfloat
-    center::Cint
-    flip::Cint
-    gaussian_noise::Cint
-    blur::Cint
-    mixup::Cint
-    label_smooth_eps::Cfloat
-    resize_step::Cint
-    attention::Cint
-    adversarial::Cint
-    adversarial_lr::Cfloat
-    max_chart_loss::Cfloat
-    letter_box::Cint
-    angle::Cfloat
-    aspect::Cfloat
-    exposure::Cfloat
-    saturation::Cfloat
-    hue::Cfloat
-    random::Cint
-    track::Cint
-    augment_speed::Cint
-    sequential_subdivisions::Cint
-    init_sequential_subdivisions::Cint
-    current_subdivision::Cint
-    try_fix_nan::Cint
-    gpu_index::Cint
-    hierarchy::Ptr{tree}
-    input::Ptr{Cfloat}
-    truth::Ptr{Cfloat}
-    delta::Ptr{Cfloat}
-    workspace::Ptr{Cfloat}
-    train::Cint
-    index::Cint
-    cost::Ptr{Cfloat}
-    clip::Cfloat
-    delta_gpu::Ptr{Cfloat}
-    output_gpu::Ptr{Cfloat}
-    input_state_gpu::Ptr{Cfloat}
-    input_pinned_cpu::Ptr{Cfloat}
-    input_pinned_cpu_flag::Cint
-    input_gpu::Ptr{Ptr{Cfloat}}
-    truth_gpu::Ptr{Ptr{Cfloat}}
-    input16_gpu::Ptr{Ptr{Cfloat}}
-    output16_gpu::Ptr{Ptr{Cfloat}}
-    max_input16_size::Ptr{Cvoid} # max_input16_size::Ptr{Csize_t}
-    max_output16_size::Ptr{Cvoid} # max_output16_size::Ptr{Csize_t}
-    wait_stream::Cint
-    global_delta_gpu::Ptr{Cfloat}
-    state_delta_gpu::Ptr{Cfloat}
-    max_delta_gpu_size::Csize_t
-    optimized_memory::Cint
-    dynamic_minibatch::Cint
-    workspace_size_limit::Csize_t
-end
-
-function Base.getproperty(x::network, f::Symbol)
-    f === :seen && return Ptr{UInt64}(getfield(x, f))
-    f === :layers && return Ptr{layer}(getfield(x, f))
-    f === :max_input16_size && return Ptr{Csize_t}(getfield(x, f))
-    f === :max_output16_size && return Ptr{Csize_t}(getfield(x, f))
-    return getfield(x, f)
-end
-
-struct network_state
-    truth::Ptr{Cfloat}
-    input::Ptr{Cfloat}
-    delta::Ptr{Cfloat}
-    workspace::Ptr{Cfloat}
-    train::Cint
-    index::Cint
-    net::network
-end
-
 @cenum LAYER_TYPE::UInt32 begin
     CONVOLUTIONAL = 0
     DECONVOLUTIONAL = 1
@@ -169,21 +25,24 @@ end
     GRU = 19
     LSTM = 20
     CONV_LSTM = 21
-    CRNN = 22
-    BATCHNORM = 23
-    NETWORK = 24
-    XNOR = 25
-    REGION = 26
-    YOLO = 27
-    GAUSSIAN_YOLO = 28
-    ISEG = 29
-    REORG = 30
-    REORG_OLD = 31
-    UPSAMPLE = 32
-    LOGXENT = 33
-    L2NORM = 34
-    EMPTY = 35
-    BLANK = 36
+    HISTORY = 22
+    CRNN = 23
+    BATCHNORM = 24
+    NETWORK = 25
+    XNOR = 26
+    REGION = 27
+    YOLO = 28
+    GAUSSIAN_YOLO = 29
+    ISEG = 30
+    REORG = 31
+    REORG_OLD = 32
+    UPSAMPLE = 33
+    LOGXENT = 34
+    L2NORM = 35
+    EMPTY = 36
+    BLANK = 37
+    CONTRASTIVE = 38
+    IMPLICIT = 39
 end
 
 @cenum ACTIVATION::UInt32 begin
@@ -195,19 +54,21 @@ end
     RAMP = 5
     TANH = 6
     PLSE = 7
-    LEAKY = 8
-    ELU = 9
-    LOGGY = 10
-    STAIR = 11
-    HARDTAN = 12
-    LHTAN = 13
-    SELU = 14
-    GELU = 15
-    SWISH = 16
-    MISH = 17
-    NORM_CHAN = 18
-    NORM_CHAN_SOFTMAX = 19
-    NORM_CHAN_SOFTMAX_MAXVAL = 20
+    REVLEAKY = 8
+    LEAKY = 9
+    ELU = 10
+    LOGGY = 11
+    STAIR = 12
+    HARDTAN = 13
+    LHTAN = 14
+    SELU = 15
+    GELU = 16
+    SWISH = 17
+    MISH = 18
+    HARD_MISH = 19
+    NORM_CHAN = 20
+    NORM_CHAN_SOFTMAX = 21
+    NORM_CHAN_SOFTMAX_MAXVAL = 22
 end
 
 @cenum COST_TYPE::UInt32 begin
@@ -231,6 +92,16 @@ end
     SOFTMAX_NORMALIZATION = 2
 end
 
+struct contrastive_params
+    sim::Cfloat
+    exp_sim::Cfloat
+    P::Cfloat
+    i::Cint
+    j::Cint
+    time_step_i::Cint
+    time_step_j::Cint
+end
+
 @cenum IOU_LOSS::UInt32 begin
     IOU = 0
     GIOU = 1
@@ -250,6 +121,18 @@ end
     YOLO_CENTER = 1
     YOLO_LEFT_TOP = 2
     YOLO_RIGHT_BOTTOM = 4
+end
+
+struct tree
+    leaf::Ptr{Cint}
+    n::Cint
+    parent::Ptr{Cint}
+    child::Ptr{Cint}
+    group::Ptr{Cint}
+    name::Ptr{Cstring}
+    groups::Cint
+    group_size::Ptr{Cint}
+    group_offset::Ptr{Cint}
 end
 
 struct layer
@@ -287,6 +170,7 @@ struct layer
     out_c::Cint
     n::Cint
     max_boxes::Cint
+    truth_size::Cint
     groups::Cint
     group_id::Cint
     size::Cint
@@ -297,8 +181,10 @@ struct layer
     dilation::Cint
     antialiasing::Cint
     maxpool_depth::Cint
+    maxpool_zero_nonmax::Cint
     out_channels::Cint
-    reverse::Cint
+    reverse::Cfloat
+    coordconv::Cint
     flatten::Cint
     spatial::Cint
     pad::Cint
@@ -313,6 +199,7 @@ struct layer
     keep_delta_gpu::Cint
     optimized_memory::Cint
     steps::Cint
+    history_size::Cint
     bottleneck::Cint
     time_normalizer::Cfloat
     state_constrain::Cint
@@ -341,6 +228,15 @@ struct layer
     noloss::Cint
     softmax::Cint
     classes::Cint
+    detection::Cint
+    embedding_layer_id::Cint
+    embedding_output::Ptr{Cfloat}
+    embedding_size::Cint
+    sim_thresh::Cfloat
+    track_history_size::Cint
+    dets_for_track::Cint
+    dets_for_show::Cint
+    track_ciou_norm::Cfloat
     coords::Cint
     background::Cint
     rescore::Cint
@@ -409,6 +305,13 @@ struct layer
     sums::Ptr{Ptr{Cfloat}}
     rand::Ptr{Cfloat}
     cost::Ptr{Cfloat}
+    labels::Ptr{Cint}
+    class_ids::Ptr{Cint}
+    contrastive_neg_max::Cint
+    cos_sim::Ptr{Cfloat}
+    exp_cos_sim::Ptr{Cfloat}
+    p_constrastive::Ptr{Cfloat}
+    contrast_p_gpu::Ptr{contrastive_params}
     state::Ptr{Cfloat}
     prev_state::Ptr{Cfloat}
     forgot_state::Ptr{Cfloat}
@@ -423,14 +326,21 @@ struct layer
     bias_updates::Ptr{Cfloat}
     scales::Ptr{Cfloat}
     scale_updates::Ptr{Cfloat}
+    weights_ema::Ptr{Cfloat}
+    biases_ema::Ptr{Cfloat}
+    scales_ema::Ptr{Cfloat}
     weights::Ptr{Cfloat}
     weight_updates::Ptr{Cfloat}
     scale_x_y::Cfloat
     objectness_smooth::Cint
+    new_coords::Cint
+    show_details::Cint
     max_delta::Cfloat
     uc_normalizer::Cfloat
     iou_normalizer::Cfloat
+    obj_normalizer::Cfloat
     cls_normalizer::Cfloat
+    delta_normalizer::Cfloat
     iou_loss::IOU_LOSS
     iou_thresh_kind::IOU_LOSS
     nms_kind::NMS_KIND
@@ -491,7 +401,7 @@ struct layer
     stored_c_cpu::Ptr{Cfloat}
     dc_cpu::Ptr{Cfloat}
     binary_input::Ptr{Cfloat}
-    bin_re_packed_input::Ptr{Cvoid} # bin_re_packed_input::Ptr{UInt32}
+    bin_re_packed_input::Ptr{UInt32}
     t_bit_input::Cstring
     input_layer::Ptr{layer}
     self_layer::Ptr{layer}
@@ -531,6 +441,8 @@ struct layer
     softmax_tree::Ptr{tree}
     workspace_size::Csize_t
     indexes_gpu::Ptr{Cint}
+    stream::Cint
+    wait_stream_id::Cint
     z_gpu::Ptr{Cfloat}
     r_gpu::Ptr{Cfloat}
     h_gpu::Ptr{Cfloat}
@@ -605,6 +517,7 @@ struct layer
     activation_input_gpu::Ptr{Cfloat}
     loss_gpu::Ptr{Cfloat}
     delta_gpu::Ptr{Cfloat}
+    cos_sim_gpu::Ptr{Cfloat}
     rand_gpu::Ptr{Cfloat}
     drop_blocks_scale::Ptr{Cfloat}
     drop_blocks_scale_gpu::Ptr{Cfloat}
@@ -640,9 +553,148 @@ struct layer
     poolingDesc::Ptr{Cvoid}
 end
 
-function Base.getproperty(x::layer, f::Symbol)
-    f === :bin_re_packed_input && return Ptr{UInt32}(getfield(x, f))
-    return getfield(x, f)
+@cenum learning_rate_policy::UInt32 begin
+    CONSTANT = 0
+    STEP = 1
+    EXP = 2
+    POLY = 3
+    STEPS = 4
+    SIG = 5
+    RANDOM = 6
+    SGDR = 7
+end
+
+struct network
+    n::Cint
+    batch::Cint
+    seen::Ptr{UInt64}
+    badlabels_reject_threshold::Ptr{Cfloat}
+    delta_rolling_max::Ptr{Cfloat}
+    delta_rolling_avg::Ptr{Cfloat}
+    delta_rolling_std::Ptr{Cfloat}
+    weights_reject_freq::Cint
+    equidistant_point::Cint
+    badlabels_rejection_percentage::Cfloat
+    num_sigmas_reject_badlabels::Cfloat
+    ema_alpha::Cfloat
+    cur_iteration::Ptr{Cint}
+    loss_scale::Cfloat
+    t::Ptr{Cint}
+    epoch::Cfloat
+    subdivisions::Cint
+    layers::Ptr{layer}
+    output::Ptr{Cfloat}
+    policy::learning_rate_policy
+    benchmark_layers::Cint
+    total_bbox::Ptr{Cint}
+    rewritten_bbox::Ptr{Cint}
+    learning_rate::Cfloat
+    learning_rate_min::Cfloat
+    learning_rate_max::Cfloat
+    batches_per_cycle::Cint
+    batches_cycle_mult::Cint
+    momentum::Cfloat
+    decay::Cfloat
+    gamma::Cfloat
+    scale::Cfloat
+    power::Cfloat
+    time_steps::Cint
+    step::Cint
+    max_batches::Cint
+    num_boxes::Cint
+    train_images_num::Cint
+    seq_scales::Ptr{Cfloat}
+    scales::Ptr{Cfloat}
+    steps::Ptr{Cint}
+    num_steps::Cint
+    burn_in::Cint
+    cudnn_half::Cint
+    adam::Cint
+    B1::Cfloat
+    B2::Cfloat
+    eps::Cfloat
+    inputs::Cint
+    outputs::Cint
+    truths::Cint
+    notruth::Cint
+    h::Cint
+    w::Cint
+    c::Cint
+    max_crop::Cint
+    min_crop::Cint
+    max_ratio::Cfloat
+    min_ratio::Cfloat
+    center::Cint
+    flip::Cint
+    gaussian_noise::Cint
+    blur::Cint
+    mixup::Cint
+    label_smooth_eps::Cfloat
+    resize_step::Cint
+    attention::Cint
+    adversarial::Cint
+    adversarial_lr::Cfloat
+    max_chart_loss::Cfloat
+    letter_box::Cint
+    mosaic_bound::Cint
+    contrastive::Cint
+    contrastive_jit_flip::Cint
+    contrastive_color::Cint
+    unsupervised::Cint
+    angle::Cfloat
+    aspect::Cfloat
+    exposure::Cfloat
+    saturation::Cfloat
+    hue::Cfloat
+    random::Cint
+    track::Cint
+    augment_speed::Cint
+    sequential_subdivisions::Cint
+    init_sequential_subdivisions::Cint
+    current_subdivision::Cint
+    try_fix_nan::Cint
+    gpu_index::Cint
+    hierarchy::Ptr{tree}
+    input::Ptr{Cfloat}
+    truth::Ptr{Cfloat}
+    delta::Ptr{Cfloat}
+    workspace::Ptr{Cfloat}
+    train::Cint
+    index::Cint
+    cost::Ptr{Cfloat}
+    clip::Cfloat
+    delta_gpu::Ptr{Cfloat}
+    output_gpu::Ptr{Cfloat}
+    input_state_gpu::Ptr{Cfloat}
+    input_pinned_cpu::Ptr{Cfloat}
+    input_pinned_cpu_flag::Cint
+    input_gpu::Ptr{Ptr{Cfloat}}
+    truth_gpu::Ptr{Ptr{Cfloat}}
+    input16_gpu::Ptr{Ptr{Cfloat}}
+    output16_gpu::Ptr{Ptr{Cfloat}}
+    max_input16_size::Ptr{Csize_t}
+    max_output16_size::Ptr{Csize_t}
+    wait_stream::Cint
+    cuda_graph::Ptr{Cvoid}
+    cuda_graph_exec::Ptr{Cvoid}
+    use_cuda_graph::Cint
+    cuda_graph_ready::Ptr{Cint}
+    global_delta_gpu::Ptr{Cfloat}
+    state_delta_gpu::Ptr{Cfloat}
+    max_delta_gpu_size::Csize_t
+    optimized_memory::Cint
+    dynamic_minibatch::Cint
+    workspace_size_limit::Csize_t
+end
+
+struct network_state
+    truth::Ptr{Cfloat}
+    input::Ptr{Cfloat}
+    delta::Ptr{Cfloat}
+    workspace::Ptr{Cfloat}
+    train::Cint
+    index::Cint
+    net::network
 end
 
 struct image
@@ -662,12 +714,17 @@ end
 struct detection
     bbox::box
     classes::Cint
+    best_class_idx::Cint
     prob::Ptr{Cfloat}
     mask::Ptr{Cfloat}
     objectness::Cfloat
     sort_class::Cint
     uc::Ptr{Cfloat}
     points::Cint
+    embeddings::Ptr{Cfloat}
+    embedding_size::Cint
+    sim::Cfloat
+    track_id::Cint
 end
 
 struct matrix
@@ -722,6 +779,7 @@ struct load_args
     nh::Cint
     nw::Cint
     num_boxes::Cint
+    truth_size::Cint
     min::Cint
     max::Cint
     size::Cint
@@ -734,8 +792,12 @@ struct load_args
     track::Cint
     augment_speed::Cint
     letter_box::Cint
+    mosaic_bound::Cint
     show_imgs::Cint
     dontuse_opencv::Cint
+    contrastive::Cint
+    contrastive_jit_flip::Cint
+    contrastive_color::Cint
     jitter::Cfloat
     resize::Cfloat
     flip::Cint
@@ -818,6 +880,7 @@ const pdet_num_pair = Ptr{det_num_pair}
 
 struct box_label
     id::Cint
+    track_id::Cint
     x::Cfloat
     y::Cfloat
     w::Cfloat
@@ -838,6 +901,10 @@ end
 
 function free_network(net)
     ccall((:free_network, libdarknet), Cvoid, (network,), net)
+end
+
+function free_network_ptr(net)
+    ccall((:free_network_ptr, libdarknet), Cvoid, (Ptr{network},), net)
 end
 
 function get_base_args(net)
@@ -916,8 +983,8 @@ function validate_detector_map(datacfg, cfgfile, weightfile, thresh_calc_avg_iou
     ccall((:validate_detector_map, libdarknet), Cfloat, (Cstring, Cstring, Cstring, Cfloat, Cfloat, Cint, Cint, Ptr{network}), datacfg, cfgfile, weightfile, thresh_calc_avg_iou, iou_thresh, map_points, letter_box, existing_net)
 end
 
-function train_detector(datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port, show_imgs, benchmark_layers, chart_path)
-    ccall((:train_detector, libdarknet), Cvoid, (Cstring, Cstring, Cstring, Ptr{Cint}, Cint, Cint, Cint, Cint, Cint, Cint, Cint, Cstring), datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port, show_imgs, benchmark_layers, chart_path)
+function train_detector(datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, thresh, iou_thresh, mjpeg_port, show_imgs, benchmark_layers, chart_path)
+    ccall((:train_detector, libdarknet), Cvoid, (Cstring, Cstring, Cstring, Ptr{Cint}, Cint, Cint, Cint, Cint, Cfloat, Cfloat, Cint, Cint, Cint, Cstring), datacfg, cfgfile, weightfile, gpus, ngpus, clear, dont_show, calc_map, thresh, iou_thresh, mjpeg_port, show_imgs, benchmark_layers, chart_path)
 end
 
 function test_detector(datacfg, cfgfile, weightfile, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile, letter_box, benchmark_layers)
@@ -940,8 +1007,8 @@ function make_image_red(im)
     ccall((:make_image_red, libdarknet), Cvoid, (image,), im)
 end
 
-function make_attention_image(img_size, original_delta_cpu, original_input_cpu, w, h, c)
-    ccall((:make_attention_image, libdarknet), image, (Cint, Ptr{Cfloat}, Ptr{Cfloat}, Cint, Cint, Cint), img_size, original_delta_cpu, original_input_cpu, w, h, c)
+function make_attention_image(img_size, original_delta_cpu, original_input_cpu, w, h, c, alpha)
+    ccall((:make_attention_image, libdarknet), image, (Cint, Ptr{Cfloat}, Ptr{Cfloat}, Cint, Cint, Cint, Cfloat), img_size, original_delta_cpu, original_input_cpu, w, h, c, alpha)
 end
 
 function resize_image(im, w, h)
@@ -1024,7 +1091,7 @@ function cuda_set_device(n)
     ccall((:cuda_set_device, libdarknet), Cvoid, (Cint,), n)
 end
 
-# no prototype is found for this function at darknet.h:1010:15, please use with caution
+# no prototype is found for this function at darknet.h:1086:15, please use with caution
 function cuda_get_context()
     ccall((:cuda_get_context, libdarknet), Ptr{Cvoid}, ())
 end
@@ -1045,7 +1112,7 @@ function get_metadata(file)
     ccall((:get_metadata, libdarknet), metadata, (Cstring,), file)
 end
 
-# no prototype is found for this function at darknet.h:1024:14, please use with caution
+# no prototype is found for this function at darknet.h:1100:14, please use with caution
 function delete_json_sender()
     ccall((:delete_json_sender, libdarknet), Cvoid, ())
 end
@@ -1054,27 +1121,27 @@ function send_json_custom(send_buf, port, timeout)
     ccall((:send_json_custom, libdarknet), Cvoid, (Cstring, Cint, Cint), send_buf, port, timeout)
 end
 
-# no prototype is found for this function at darknet.h:1026:16, please use with caution
+# no prototype is found for this function at darknet.h:1102:16, please use with caution
 function get_time_point()
     ccall((:get_time_point, libdarknet), Cdouble, ())
 end
 
-# no prototype is found for this function at darknet.h:1027:6, please use with caution
+# no prototype is found for this function at darknet.h:1103:6, please use with caution
 function start_timer()
     ccall((:start_timer, libdarknet), Cvoid, ())
 end
 
-# no prototype is found for this function at darknet.h:1028:6, please use with caution
+# no prototype is found for this function at darknet.h:1104:6, please use with caution
 function stop_timer()
     ccall((:stop_timer, libdarknet), Cvoid, ())
 end
 
-# no prototype is found for this function at darknet.h:1029:8, please use with caution
+# no prototype is found for this function at darknet.h:1105:8, please use with caution
 function get_time()
     ccall((:get_time, libdarknet), Cdouble, ())
 end
 
-# no prototype is found for this function at darknet.h:1030:6, please use with caution
+# no prototype is found for this function at darknet.h:1106:6, please use with caution
 function stop_timer_and_show()
     ccall((:stop_timer_and_show, libdarknet), Cvoid, ())
 end
@@ -1083,12 +1150,20 @@ function stop_timer_and_show_name(name)
     ccall((:stop_timer_and_show_name, libdarknet), Cvoid, (Cstring,), name)
 end
 
-# no prototype is found for this function at darknet.h:1032:6, please use with caution
+# no prototype is found for this function at darknet.h:1108:6, please use with caution
 function show_total_time()
     ccall((:show_total_time, libdarknet), Cvoid, ())
 end
 
-# no prototype is found for this function at darknet.h:1035:14, please use with caution
+function set_track_id(new_dets, new_dets_num, thresh, sim_thresh, track_ciou_norm, deque_size, dets_for_track, dets_for_show)
+    ccall((:set_track_id, libdarknet), Cvoid, (Ptr{detection}, Cint, Cfloat, Cfloat, Cfloat, Cint, Cint, Cint), new_dets, new_dets_num, thresh, sim_thresh, track_ciou_norm, deque_size, dets_for_track, dets_for_show)
+end
+
+function fill_remaining_id(new_dets, new_dets_num, new_track_id, thresh)
+    ccall((:fill_remaining_id, libdarknet), Cint, (Ptr{detection}, Cint, Cint, Cfloat), new_dets, new_dets_num, new_track_id, thresh)
+end
+
+# no prototype is found for this function at darknet.h:1115:14, please use with caution
 function init_cpu()
     ccall((:init_cpu, libdarknet), Cvoid, ())
 end

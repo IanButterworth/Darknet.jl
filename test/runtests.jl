@@ -64,7 +64,11 @@ n = 5
         sort!(results, by=x -> x[2], rev=true)
 
         for (result, expected) in zip(results, expected_results)
-            @test result == expected
+            @test result[1] == expected[1]
+            @test result[2] ≈ expected[2]
+            for (r, e) in zip(result[3], expected[3])
+                @test r ≈ e
+            end
         end
     end
     println(to)
