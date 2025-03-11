@@ -46,6 +46,8 @@ datafile = "coco.data"
 
 imagefile = "/path/to/images/test.jpg"
 
+Darknet.download_defaults()
+
 net = Darknet.load_network(joinpath(d,cfgfile), joinpath(d,weightsfile),1)
 meta = Darknet.get_metadata(joinpath(d,datafile));
 
@@ -70,11 +72,11 @@ or for looping through images from julia, avoid reallocation due to permuted dim
 img = convert(Array{Float32}, load(imagefile)) #Read in array via a julia method
 
 # Darknet flips the first 2 dims of an image (cols,rows,colorchannels)
-# so preallocate a permuted dims array to prevent reallocation in 
-if size(img,3) > 1 #if more than 1 color channel 
-    img_permuted = Array{Float32}(undef,size(img,2),size(img,1),size(img,3)) 
+# so preallocate a permuted dims array to prevent reallocation in
+if size(img,3) > 1 #if more than 1 color channel
+    img_permuted = Array{Float32}(undef,size(img,2),size(img,1),size(img,3))
 else
-    img_permuted = Array{Float32}(undef,size(img,2),size(img,1)) 
+    img_permuted = Array{Float32}(undef,size(img,2),size(img,1))
 end
 
 img_d = Darknet.array_to_image(img,img_permuted) #Darknet image type with pointers to source data
@@ -86,7 +88,7 @@ results = Darknet.detect(net,meta,img_d,thresh=0.1,nms=0.3)
 ```
 
 Preview result using Makie:
-```julia 
+```julia
 using Makie, GeometryTypes
 scene = Scene(resolution = size(img'))
 image!(scene,img',scale_plot = false)
