@@ -28,14 +28,15 @@ end
 end
 
 expected_results = Any[
-    ("pottedplant", 0.12004832f0, (41.90645f0, 81.798485f0, 67.07667f0, 132.33755f0)),
     ("dog", 0.71404153f0, (184.5216f0, 247.4424f0, 160.45781f0, 235.32559f0)),
-    ("truck", 0.25427902f0, (388.0046f0, 56.55401f0, 22.06442f0, 55.60041f0)),
-    ("car", 0.5302366f0, (386.61276f0, 57.51152f0, 54.860195f0, 74.6036f0)),
-    ("truck", 0.1921224f0, (386.61276f0, 57.51152f0, 54.860195f0, 74.6036f0)),
     ("car", 0.66470796f0, (392.534f0, 56.250736f0, 33.37399f0, 34.995964f0)),
-    ("bicycle", 0.36078787f0, (273.65543f0, 211.16792f0, 268.42365f0, 263.27005f0))
+    ("car", 0.5302366f0, (386.61276f0, 57.51152f0, 54.860195f0, 74.6036f0)),
+    ("bicycle", 0.36078787f0, (273.65543f0, 211.16792f0, 268.42365f0, 263.27005f0)),
+    ("truck", 0.25427902f0, (388.0046f0, 56.55401f0, 22.06442f0, 55.60041f0)),
+    ("truck", 0.1921224f0, (386.61276f0, 57.51152f0, 54.860195f0, 74.6036f0)),
+    ("pottedplant", 0.12004832f0, (41.90645f0, 81.798485f0, 67.07667f0, 132.33755f0))
 ]
+# sort!(expected_results, by=x->x[2], rev=true)
 
 n = 5
 @testset "Load and run $n times" begin
@@ -58,8 +59,10 @@ n = 5
         @test length(results) == length(expected_results)
 
         # @show results
-        # sort!(results, by=x->x[2], rev=true)
-        # sort!(expected_results, by=x->x[2], rev=true)
+        # order of results varies across platform (I don't think order is guaranteed)
+        # expected_results is manually sorted
+        sort!(results, by=x -> x[2], rev=true)
+
         for (result, expected) in zip(results, expected_results)
             @test result == expected
         end
