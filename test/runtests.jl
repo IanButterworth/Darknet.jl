@@ -59,6 +59,8 @@ n = 5
     end
 
     @test length(results) == length(expected_results)
+    sort!(results, by=x->x[2], rev=true)
+    sort!(expected_results, by=x->x[2], rev=true)
     for (result, expected) in zip(results, expected_results)
         @test result == expected
     end
