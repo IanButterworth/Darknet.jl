@@ -1,5 +1,7 @@
 module Darknet
-using Libdl, CEnum
+using CEnum
+using Downloads
+using Libdl
 
 using Darknet_jll
 
@@ -42,7 +44,7 @@ function download_defaults()
         end
     end
     weightsfile = joinpath(datadir,"yolov3-tiny.weights")
-    !isfile(weightsfile) && download("https://pjreddie.com/media/files/yolov3-tiny.weights", weightsfile)
+    !isfile(weightsfile) && Downloads.download("https://pjreddie.com/media/files/yolov3-tiny.weights", weightsfile)
 end
 
 end # module Darknet
