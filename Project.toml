@@ -1,7 +1,7 @@
 name = "Darknet"
 uuid = "e2912957-7d06-5673-a7d6-96d153624877"
 authors = ["Ian Butterworth <i.r.butterworth@gmail.com"]
-version = "0.3.2"
+version = "0.4.0"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
@@ -10,7 +10,8 @@ Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [compat]
 CEnum = "0.2, 0.3, 0.4, 0.5"
-Darknet_jll = "=2020.6.5"
+Darknet_jll = "=2021.10.29"
+Libdl = "1"
 julia = "1"
 
 [extras]
