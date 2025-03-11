@@ -10,27 +10,10 @@ Wrapper for https://github.com/AlexeyAB/darknet based on pre-build binaries.
 
 Current support:
 - CPU-only with OpenMP via BinaryBuilder: https://github.com/JuliaPackaging/Yggdrasil/blob/master/D/Darknet
-```
-Platforms:
-- i686-linux-gnu
-- x86_64-linux-gnu
-- aarch64-linux-gnu
-- armv7l-linux-gnueabihf
-- powerpc64le-linux-gnu
-- i686-linux-musl
-- x86_64-linux-musl
-- aarch64-linux-musl
-- armv7l-linux-musleabihf
-- x86_64-apple-darwin14
-- x86_64-unknown-freebsd11.1
-- i686-w64-mingw32
-- x86_64-w64-mingw32
-```
-
 
 ## Installation
 
-Requires julia 1.3+. Install with Pkg, just like any other registered Julia package:
+Requires julia 1.10+. Install with Pkg, just like any other registered Julia package:
 
 ```jl
 pkg> add Darknet  # Press ']' to enter the Pkg REPL mode.
