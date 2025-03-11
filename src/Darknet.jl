@@ -44,7 +44,7 @@ function download_defaults()
         end
     end
     weightsfile = joinpath(datadir,"yolov3-tiny.weights")
-    !isfile(weightsfile) && Downloads.download("https://pjreddie.com/media/files/yolov3-tiny.weights", weightsfile)
+    !isfile(weightsfile) && Downloads.download("https://github.com/IanButterworth/Darknet.jl/releases/download/v0.3.2/yolov3-tiny.weights", weightsfile)
 end
 
 end # module Darknet
