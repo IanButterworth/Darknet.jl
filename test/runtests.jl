@@ -4,6 +4,8 @@ using ImageCore
 using Test
 using TimerOutputs
 
+Darknet.download_defaults()
+
 const to = TimerOutput()
 
 datadir = joinpath(dirname(@__DIR__), "data")
