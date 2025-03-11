@@ -11,10 +11,10 @@ function detect(net, meta, img; thresh=0.5, hier_thresh=0.5, nms=0)
     names = unsafe_wrap(Array, meta.names, meta.classes)
     for j in 1:num_dets[]
         prob = unsafe_wrap(Array, detections[j].prob, meta.classes)
-        for i in 1:meta.classes  
+        for i in 1:meta.classes
             if prob[i] > 0
                 b = detections[j].bbox
-                nameTag = names[i]
+                nameTag = unsafe_string(names[i])
                 push!(res,(nameTag, prob[i], (b.x, b.y, b.w, b.h)))
             end
         end
