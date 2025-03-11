@@ -28,13 +28,13 @@ end
 end
 
 expected_results = Any[
-    ("dog", 0.71402943f0, (184.52151f0, 247.44235f0, 160.45847f0, 235.32379f0)),
-    ("bicycle", 0.3607869f0, (273.65576f0, 211.16771f0, 268.42145f0, 263.27127f0)),
-    ("car", 0.5302138f0, (386.61285f0, 57.511528f0, 54.860207f0, 74.604774f0)),
-    ("truck", 0.19213372f0, (386.61285f0, 57.511528f0, 54.860207f0, 74.604774f0)),
-    ("car", 0.6647044f0, (392.53403f0, 56.250816f0, 33.373787f0, 34.995895f0)),
-    ("truck", 0.2542767f0, (388.00473f0, 56.554222f0, 22.064653f0, 55.60034f0)),
-    ("pottedplant", 0.12004495f0, (41.906433f0, 81.79831f0, 67.07692f0, 132.3367f0))
+    ("pottedplant", 0.12004832f0, (41.90645f0, 81.798485f0, 67.07667f0, 132.33755f0)),
+    ("dog", 0.71404153f0, (184.5216f0, 247.4424f0, 160.45781f0, 235.32559f0)),
+    ("truck", 0.25427902f0, (388.0046f0, 56.55401f0, 22.06442f0, 55.60041f0)),
+    ("car", 0.5302366f0, (386.61276f0, 57.51152f0, 54.860195f0, 74.6036f0)),
+    ("truck", 0.1921224f0, (386.61276f0, 57.51152f0, 54.860195f0, 74.6036f0)),
+    ("car", 0.66470796f0, (392.534f0, 56.250736f0, 33.37399f0, 34.995964f0)),
+    ("bicycle", 0.36078787f0, (273.65543f0, 211.16792f0, 268.42365f0, 263.27005f0))
 ]
 
 n = 5
@@ -55,15 +55,14 @@ n = 5
     for _ in 1:n
         @timeit to "Send image to darknet" img_d = Darknet.array_to_image(img) #Darknet image type with pointers to source data
         @timeit to "Run detection" results = Darknet.detect(net, meta, img_d, thresh=0.1, nms=0.3)
-        @test length(results) == 7
-    end
+        @test length(results) == length(expected_results)
 
-    @test length(results) == length(expected_results)
-    @show results
-    # sort!(results, by=x->x[2], rev=true)
-    # sort!(expected_results, by=x->x[2], rev=true)
-    for (result, expected) in zip(results, expected_results)
-        @test result == expected
+        # @show results
+        # sort!(results, by=x->x[2], rev=true)
+        # sort!(expected_results, by=x->x[2], rev=true)
+        for (result, expected) in zip(results, expected_results)
+            @test result == expected
+        end
     end
     println(to)
 end
