@@ -6,8 +6,6 @@ using TimerOutputs
 
 Darknet.download_defaults()
 
-const to = TimerOutput()
-
 datadir = joinpath(dirname(@__DIR__), "data")
 
 @testset "Create Darknet image" begin
@@ -41,6 +39,7 @@ expected_results = Any[
 
 n = 5
 @testset "Load and run $n times" begin
+    to = TimerOutput()
     weightsfile = "yolov3-tiny.weights"
     cfgfile = "yolov3-tiny.cfg"
     datafile = "coco.data"
@@ -58,7 +57,10 @@ n = 5
         @timeit to "Run detection" results = Darknet.detect(net, meta, img_d, thresh=0.1, nms=0.3)
         @test length(results) == 7
     end
-    @info "Objects detected: $(length(results))"
-    @test results == expected_results
+
+    @test length(results) == length(expected_results)
+    for (result, expected) in zip(results, expected_results)
+        @test result == expected
+    end
     println(to)
 end
