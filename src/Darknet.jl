@@ -52,7 +52,7 @@ function load_network(cfg, weights, clear)
     # Must rename this method after generating the wrapper in LibDarknet.jl to avoid name conflict
     net = _load_network(cfg, weights, clear)
     finalizer(net) do net
-        free_network(net)
+        free_network_ptr(net)
     end
     return net
 end
@@ -60,7 +60,7 @@ function load_network_custom(cfg, weights, clear, batch)
     # Must rename this method after generating the wrapper in LibDarknet.jl to avoid name conflict
     net = _load_network_custom(cfg, weights, clear, batch)
     finalizer(net) do net
-        free_network(net)
+        free_network_ptr(net)
     end
     return net
 end
