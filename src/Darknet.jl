@@ -47,4 +47,22 @@ function download_defaults()
     !isfile(weightsfile) && Downloads.download("https://github.com/IanButterworth/Darknet.jl/releases/download/v0.3.2/yolov3-tiny.weights", weightsfile)
 end
 
+# register finalizers on load
+function load_network(cfg, weights, clear)
+    # Must rename this method after generating the wrapper in LibDarknet.jl to avoid name conflict
+    net = _load_network(cfg, weights, clear)
+    finalizer(net) do net
+        free_network(net)
+    end
+    return net
+end
+function load_network_custom(cfg, weights, clear, batch)
+    # Must rename this method after generating the wrapper in LibDarknet.jl to avoid name conflict
+    net = _load_network_custom(cfg, weights, clear, batch)
+    finalizer(net) do net
+        free_network(net)
+    end
+    return net
+end
+
 end # module Darknet

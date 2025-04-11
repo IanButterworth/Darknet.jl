@@ -891,11 +891,11 @@ struct box_label
     bottom::Cfloat
 end
 
-function load_network(cfg, weights, clear)
+function _load_network(cfg, weights, clear)
     ccall((:load_network, libdarknet), Ptr{network}, (Cstring, Cstring, Cint), cfg, weights, clear)
 end
 
-function load_network_custom(cfg, weights, clear, batch)
+function _load_network_custom(cfg, weights, clear, batch)
     ccall((:load_network_custom, libdarknet), Ptr{network}, (Cstring, Cstring, Cint, Cint), cfg, weights, clear, batch)
 end
 
