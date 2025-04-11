@@ -51,6 +51,7 @@ end
 mutable struct Network
     ptr::Ptr{Darknet.network}
 end
+Base.unsafe_convert(::Type{Ptr{Darknet.network}}, net::Darknet.Network) = net.ptr
 
 # register finalizers on load
 function load_network(cfg, weights, clear)
@@ -60,7 +61,7 @@ function load_network(cfg, weights, clear)
     finalizer(net) do n
         free_network_ptr(n.ptr)
     end
-    return net.ptr
+    return net
 end
 function load_network_custom(cfg, weights, clear, batch)
     # Must rename this method after generating the wrapper in LibDarknet.jl to avoid name conflict
@@ -69,7 +70,7 @@ function load_network_custom(cfg, weights, clear, batch)
     finalizer(net) do n
         free_network_ptr(n.ptr)
     end
-    return net.ptr
+    return net
 end
 
 end # module Darknet
