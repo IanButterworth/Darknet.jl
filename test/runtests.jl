@@ -76,3 +76,47 @@ n = 5
 
     println(to)
 end
+
+@testset "Training" begin
+    # small training config: 160x160, batch of 4, live LR from iteration 1
+    cfgsrc = read(joinpath(datadir, "yolov3-tiny.cfg"), String)
+    setkey(s, key, val) = replace(s, Regex("(?m)^$(key)\\s*=.*\$") => "$key=$val"; count=1)
+    cfg = setkey(cfgsrc, "batch", 4)
+    cfg = setkey(cfg, "subdivisions", 1)
+    cfg = setkey(cfg, "width", 160)
+    cfg = setkey(cfg, "height", 160)
+    cfg = setkey(cfg, "burn_in", 0)
+    mktempdir() do dir
+        cfgpath = joinpath(dir, "train.cfg")
+        write(cfgpath, cfg)
+        net = Darknet.load_network(cfgpath, joinpath(datadir, "yolov3-tiny.weights"), 1)
+
+        # toy batch: white rectangles on dark backgrounds, class 1
+        x = fill(0.1f0, 160, 160, 3, 4)
+        boxes = Vector{Matrix{Float32}}(undef, 4)
+        rects = [(40:80, 30:60), (20:50, 100:140), (90:130, 70:110), (100:150, 20:45)]
+        for (i, (xr, yr)) in enumerate(rects)
+            x[xr, yr, :, i] .= 1f0
+            boxes[i] = Float32[1; (first(xr)+last(xr))/2/160; (first(yr)+last(yr))/2/160; length(xr)/160; length(yr)/160;;]
+        end
+
+        td = training_data(net, x, boxes)
+        @test td.d.X.rows == 4
+        @test td.d.y.rows == 4
+
+        losses = Float32[]
+        redirect_stdout(devnull) do # silence per-layer training prints
+            for _ in 1:20
+                push!(losses, train_network!(net, td))
+            end
+        end
+        @test all(isfinite, losses)
+        @test losses[end] < losses[1]
+        @test current_iteration(net) == 20
+        @test current_rate(net) > 0
+
+        wout = joinpath(dir, "trained.weights")
+        Darknet.save_weights(net, wout)
+        @test filesize(wout) == filesize(joinpath(datadir, "yolov3-tiny.weights"))
+    end
+end
