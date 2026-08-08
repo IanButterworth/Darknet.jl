@@ -11,7 +11,7 @@ Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [compat]
 CEnum = "0.2, 0.3, 0.4, 0.5"
-Darknet_jll = "=2021.10.29"
+Darknet_jll = "=2021.10.29, 2021.10"
 Downloads = "1.6.0"
 Libdl = "1"
 julia = "1"
