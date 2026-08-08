@@ -73,4 +73,7 @@ function load_network_custom(cfg, weights, clear, batch)
     return net
 end
 
+include("training.jl")
+export training_data, train_network!, current_iteration, current_rate
+
 end # module Darknet
