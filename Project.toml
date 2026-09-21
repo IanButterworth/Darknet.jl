@@ -13,7 +13,7 @@ Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 CEnum = "0.2, 0.3, 0.4, 0.5"
 Darknet_jll = "=2021.10.29"
 Downloads = "1.6.0"
-Libdl = "1"
+Libdl = "1, < 0.0.1"
 julia = "1"
 
 [extras]
